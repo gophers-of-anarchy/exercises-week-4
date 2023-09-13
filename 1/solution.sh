@@ -1,0 +1,1 @@
+awk -F "|" '{ sum += $NF } END { print sum }; NR == 1 {print "col1 - col2 - col3" }; { gsub(/\|/, " - "); print }' data.txt
