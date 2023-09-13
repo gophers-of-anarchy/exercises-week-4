@@ -1,0 +1,1 @@
+awk -F'|' 'BEGIN{print "col1 - col2 - col3"}  {print $1 OFS  $2 OFS  $3} {sum+=$3} END {print sum}'  OFS=' - ' data.txt
