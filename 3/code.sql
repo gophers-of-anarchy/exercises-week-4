@@ -22,6 +22,6 @@ LIMIT 10;
 select customers.name, customers.phone from customers
 inner join orders on customers.id = orders.customer_id
 inner join restaurant_foods on orders.restaurant_food_id = restaurant_foods.id
-GROUP BY customers.id, customers.name
+GROUP BY customers.id
 having COUNT(distinct restaurant_id) > 4
 ORDER BY customers.name
