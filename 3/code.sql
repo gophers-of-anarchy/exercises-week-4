@@ -1,27 +1,24 @@
-
 -- Section1
-    SELECT c.name, c.phone FROM customers c
-        JOIN orders o ON c.id = o.customer_id
-    GROUP BY c.id
-    ORDER BY COUNT(*) DESC
-    LIMIT 1;
+select  name,phone from customers
+inner join orders on customer_id=customers.id
+GROUP BY customer_id 
+order by COUNT(customer_id) desc limit 1
 -- Section2
-SELECT food.id, food.name FROM foods AS food
-    JOIN restaurant_foods ON food_id=food.id
-    JOIN orders ON restaurant_food_id=restaurant_foods.id
-GROUP BY food.id ORDER BY AVG(rate) DESC, food.id ASC
-LIMIT 10;
+select foods.id,foods.name from foods
+inner join restaurant_foods on food_id=foods.id
+inner join orders on restaurant_food_id=restaurant_foods.id
+group by foods.id order by avg(rate) desc,foods.id asc
+limit 10
 -- Section3
-SELECT restaurants.id, restaurants.name FROM foods AS f
-    JOIN restaurant_foods ON food_id=f.id
-    JOIN orders ON orders.restaurant_food_id=restaurant_foods.id
-GROUP BY restaurants.id
-ORDER BY AVG(rate) DESC, restaurants.id ASC
-LIMIT 10;
+select restaurants.id,restaurants.name from foods
+inner join restaurant_foods on food_id=foods.id
+inner join orders on restaurant_food_id=restaurant_foods.id
+inner join restaurants on restaurants.id=restaurant_id
+group by restaurants.id order by avg(rate) desc,restaurants.id asc
+limit 10
 -- Section4
-select customers.name, customers.phone from customers
-inner join orders on customers.id = orders.customer_id
-inner join restaurant_foods on orders.restaurant_food_id = restaurant_foods.id
-GROUP BY customers.id
-having COUNT(distinct restaurant_id) > 4
-ORDER BY customers.name
+select distinct name,phone from( select customers.name,phone,restaurant_id,dense_rank() over ( partition by customers.id order by restaurant_id desc ) as rn from customers
+inner join orders on customer_id=customers.id
+inner join restaurant_foods on restaurant_food_id=restaurant_foods.id
+inner join restaurants on restaurant_id=restaurants.id
+order by customers.name asc) ord  where rn=5
